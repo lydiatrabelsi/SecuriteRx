@@ -2,6 +2,7 @@
 
     $login=0;
     $invalid=0;
+    session_start();
 
     if($_SERVER['REQUEST_METHOD']=='POST'){
         include 'connect.php';

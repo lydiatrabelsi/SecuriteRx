@@ -2,11 +2,14 @@
 
   $success=0;
   $user=0;
+  session_start();
 
   if($_SERVER['REQUEST_METHOD']=='POST'){
     include 'connect.php';
     $username=$_POST['username'];
     $password=$_POST['password'];
+    $username = mysqli_real_escape_string($conn, $username);
+    $password = mysqli_real_escape_string($conn, $password);
 
     if (!preg_match("/^(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,30})/", $password)) {
       echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
