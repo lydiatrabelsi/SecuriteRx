@@ -6,10 +6,7 @@ $DATABASE='singupforms';
 
 $con=mysqli_connect($HOSTNAME,$USERNAME,$PASSWORD,$DATABASE);
 
-if($con){
-    echo "Connection successful";
-}else{
+if(!$con){
     die(mysqli_error($con));
 }
-
 ?> 
