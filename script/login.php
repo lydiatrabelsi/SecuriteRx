@@ -1,5 +1,8 @@
 <?php
 
+    $login=0;
+    $invalid=0;
+
     if($_SERVER['REQUEST_METHOD']=='POST'){
         include 'connect.php';
         $username=$_POST['username'];
@@ -12,9 +15,12 @@
         if($result){
             $num=mysqli_num_rows($result);
             if($num>0){
-                echo "Login successful";
+                $login=1;
+                session_start();
+                $_SESSION['username']=$username;
+                header('location:home.php');
             }else{
-                echo "Invalid data";
+                $invalid=1;
             }
         }
     }
@@ -31,6 +37,29 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   </head>
   <body>
+
+        <?php
+
+            if($invalid){
+                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Oh no !</strong> this user does not exist, you can <a href="sign.php"> sign up </a> 
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+            }
+
+        ?>
+
+        <?php
+
+            if($login){
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Success !</strong> You are successfully logged in.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+            }
+
+        ?>
+
         <h1 class="text-center"> Login to our website </h1>
         <div class="container mt-5">
             <form action="login.php" method="post">
