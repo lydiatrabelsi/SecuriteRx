@@ -7,6 +7,8 @@
         include 'connect.php';
         $username=$_POST['username'];
         $password=$_POST['password'];
+        $username = mysqli_real_escape_string($conn, $username);
+        $password = mysqli_real_escape_string($conn, $password);
 
         $sql="select * from `registration` where username='$username' and password='$password'";
 
@@ -74,7 +76,8 @@
                     <div id="passwordHelpBlock" class="form-text">
                     Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
                 </div>
-                <button type="submit" class="btn btn-primary w-100" >Login</button>
+                <button type="submit" class="btn btn-primary w-100 mt-1" >Login</button>
+                <button type="submit" class="btn btn-primary w-100 mt-1" ><a href="sign.php" style="text-decoration: none; color: inherit; "> Sign up </a></button>
             </form>
         </div>    
   </body>

@@ -7,13 +7,13 @@
     include 'connect.php';
     $username=$_POST['username'];
     $password=$_POST['password'];
+
     if (!preg_match("/^(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,30})/", $password)) {
       echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
       <strong>Oh no !</strong> Your password should contain at least 8 characters, a number and a special character !
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>';
     }else{
-
       $sql="select * from `registration` where username='$username'";
       $result=mysqli_query($con,$sql);
       if($result){
@@ -21,6 +21,8 @@
         if($num>0){
           $user=1;
         }else{
+          $username = mysqli_real_escape_string($con, $username);
+          $password = mysqli_real_escape_string($con, $password);
           $sql="insert into `registration`(username,password) values('$username','$password')";
           $result=mysqli_query($con,$sql);
           if($result){
