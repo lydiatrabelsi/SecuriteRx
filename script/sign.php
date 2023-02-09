@@ -7,24 +7,31 @@
     include 'connect.php';
     $username=$_POST['username'];
     $password=$_POST['password'];
-    $sql="select * from `registration` where username='$username'";
-    $result=mysqli_query($con,$sql);
-    if($result){
-      $num=mysqli_num_rows($result);
-      if($num>0){
-        //echo "User already exist";
-        $user=1;
-      }else{
-        $sql="insert into `registration`(username,password) values('$username','$password')";
-        $result=mysqli_query($con,$sql);
-        if($result){
-          //echo "Signup successful";
-          $success=1;
+    if (!preg_match("/^(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,30})/", $password)) {
+      echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Oh no !</strong> Your password should contain at least 8 characters, a number and a special character !
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>';
+    }else{
+
+      $sql="select * from `registration` where username='$username'";
+      $result=mysqli_query($con,$sql);
+      if($result){
+        $num=mysqli_num_rows($result);
+        if($num>0){
+          $user=1;
         }else{
-          die(mysqli_error($con));
+          $sql="insert into `registration`(username,password) values('$username','$password')";
+          $result=mysqli_query($con,$sql);
+          if($result){
+            //echo "Signup successful";
+            $success=1;
+          }else{
+            die(mysqli_error($con));
+          }
         }
       }
-    }
+    }  
   }
 
 ?>
