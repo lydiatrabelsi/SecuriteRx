@@ -1,19 +1,21 @@
 <?php
-
+  // Désactiver la résolution des entités externes
+  $options = LIBXML_NONET;
+  $doc = new DOMDocument();
+  $doc->loadXML($xml, $options);
     $login=0;
     $invalid=0;
     session_start();
 
     if($_SERVER['REQUEST_METHOD']=='POST'){
         include 'connect.php';
-        $username=$_POST['username'];
-        $password=$_POST['password'];
-        $username = mysqli_real_escape_string($conn, $username);
-        $password = mysqli_real_escape_string($conn, $password);
+        $username = mysqli_real_escape_string($con, $_POST["username"]);
+        $password = mysqli_real_escape_string($con, $_POST["password"]);
+        $stmt = $con->prepare("SELECT * FROM `registration` WHERE username=? AND password=?");
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
 
-        $sql="select * from `registration` where username='$username' and password='$password'";
-
-        $result=mysqli_query($con,$sql);
+        $result= $stmt->get_result();
 
         if($result){
             $num=mysqli_num_rows($result);
@@ -62,7 +64,9 @@
             }
 
         ?>
-
+        <div class="monlogo">
+            <img src="logo.png" class="rounded mx-auto d-block">
+        </div>
         <h1 class="text-center"> Login to our website </h1>
         <div class="container mt-5">
             <form action="login.php" method="post">
@@ -79,6 +83,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary w-100 mt-1" >Login</button>
                 <button type="submit" class="btn btn-primary w-100 mt-1" ><a href="sign.php" style="text-decoration: none; color: inherit; "> Sign up </a></button>
+                <button type="reset" class="btn btn-primary w-100 mt-1" ><a href="login.php" style="text-decoration: none; color: inherit; "> Reset </a></button>
             </form>
         </div>    
   </body>

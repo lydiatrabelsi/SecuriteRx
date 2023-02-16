@@ -1,5 +1,11 @@
 <?php
-
+  $options = LIBXML_NONET;
+  $doc = new DOMDocument();
+  $doc->loadXML($xml, $options);
+  // Désactiver la résolution des entités externes
+  $options = LIBXML_NONET;
+  $doc = new DOMDocument();
+  $doc->loadXML($xml, $options);
 session_start();
 if(!isset($_SESSION['username'])){
     header('location:login.php');
